@@ -4,7 +4,7 @@ extern EventGroupHandle_t VerifyHandle;
 extern osThreadId VerifyTaskHandle;
 extern osThreadId emergencyTaskHandle;//应急处理任务
 extern osThreadId chasissTaskHandle;//底盘运动任务
-
+extern TIM_HandleTypeDef htim12;
 uint8_t chasis_error[4],arm_error[5],gyro_error[2],dr16_error;
 uint8_t chasiss_check = 1,arm_check = 1,gyro_check = 1,dr16_check = 1;
 
@@ -78,6 +78,7 @@ void StartVerifyTask(void const * argument)
 #endif
 		test = xEventGroupWaitBits(VerifyHandle,0x0FFF,pdTRUE,pdFALSE,portMAX_DELAY);
 		
+		HAL_TIM_PWM_Stop(&htim12,TIM_CHANNEL_1);
 		vTaskSuspend(emergencyTaskHandle);//校验失败则校验任务阻塞，无法将紧急任务挂起，执行紧急任务
   }
 }

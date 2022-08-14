@@ -20,8 +20,8 @@ MotoData Moto_4;//底盘4号电机     CAN1
 Arm_MotoData Moto_5;//1号抬升电机     CAN2     
 Arm_MotoData Moto_6;//2号左电机       CAN2
 Arm_MotoData Moto_7;//2号右电机       CAN2
-Arm_MotoData Moto_8;//4号旋转电机     CAN2
-Arm_MotoData Moto_9;//3号抬升电机     CAN2
+Arm_MotoData Moto_8;//3号抬升电机      CAN2
+Arm_MotoData Moto_9;//4号旋转电机    CAN2
 
 BaseType_t git_test = 4;
 
@@ -285,7 +285,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				Moto_5.turns = Count_laps(Moto_5.angle,Moto_5.last_angle,Moto_5.turns);//计算电机旋转圈数
 				Moto_5.last_angle = Moto_5.angle;//将电机本次角度赋值给 上一次的角度
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_5,0);
-			}
+			}break;
 			case 0x206:   //2号左电机
 			{
 				Moto_6.angle   = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1]);
@@ -309,7 +309,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_7,0);
 			}break;
-			case 0x208:  //机械臂旋转电机
+			case 0x208:  //第三关节抬升电机
 			{
 				Moto_8.angle = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1]);
 				Moto_8.speed = ((int16_t)CAN2_RxData[2]<<8|(int16_t)CAN2_RxData[3]);
@@ -319,7 +319,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				                                 //1:36的传动比，8192*36  = 294912分辨率/圈 
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_8,0);
 			}break;
-			case 0x204:  //第三关节抬升电机
+			case 0x204:  //机械臂旋转电机
 			{
 				Moto_9.angle = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1]);
 				Moto_9.speed = ((int16_t)CAN2_RxData[2]<<8|(int16_t)CAN2_RxData[3]);

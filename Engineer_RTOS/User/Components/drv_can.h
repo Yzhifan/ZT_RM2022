@@ -70,7 +70,9 @@ extern MotoData Moto_4;
 extern Arm_MotoData Moto_5;//1号抬升电机         
 extern Arm_MotoData Moto_6;//2号左电机  
 extern Arm_MotoData Moto_7;//2号右电机   
-extern Arm_MotoData Moto_8;//机械臂旋转电机 
+extern Arm_MotoData Moto_8;//3号抬升电机 
+extern Arm_MotoData Moto_9;//4号旋转电机  
+
 
 
 void CanFilter_Init(void);//CAN_HandleTypeDef *hcan

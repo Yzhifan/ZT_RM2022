@@ -133,10 +133,8 @@ int16_t Position_Gyro_pid(Error_position* gyro_error,int16_t now_velocity,int16_
 		gyro_error->Now_out =-16000;
 	}
   
-	/*实测6623给正电流的时候转动方向是相反的，在此将处理后的数据做一个简易的处理*/
-	Gimbal6623_out = -gyro_error->Now_out;
-	
-	return Gimbal6623_out;
+
+	return gyro_error->Now_out;
 }
 /**
 * @brief  云台偏航角串级pid运算函数
