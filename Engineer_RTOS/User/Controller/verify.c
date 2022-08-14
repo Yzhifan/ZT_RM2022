@@ -27,7 +27,6 @@ void StartVerifyTask(void const * argument)
 			/* 读出事件组的所有位，并取反，将校验出错的位置1赋值给对应的数组*/
 		Verify_Data = ~xEventGroupWaitBits(VerifyHandle,0x0FFF,pdFALSE,pdTRUE,0);
 		
-#if 1
 		/* 12次循环巡查错误的位置,并对出错的位赋值给对应的数组*/
 		for(uint8_t i= 0;i<12;i++)
 		{
@@ -74,9 +73,8 @@ void StartVerifyTask(void const * argument)
 		}
 		else dr16_check = check_ok;
 		
-		
-#endif
-		test = xEventGroupWaitBits(VerifyHandle,0x0FFF,pdTRUE,pdFALSE,portMAX_DELAY);
+	
+		test = xEventGroupWaitBits(VerifyHandle,0x0FFF,pdTRUE,pdTRUE,portMAX_DELAY);
 		
 		HAL_TIM_PWM_Stop(&htim12,TIM_CHANNEL_1);
 		vTaskSuspend(emergencyTaskHandle);//校验失败则校验任务阻塞，无法将紧急任务挂起，执行紧急任务

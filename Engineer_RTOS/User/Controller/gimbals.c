@@ -79,7 +79,7 @@ void gimbals_controlTask(void const * argument)
 		 arm1_out = Increment_PID(&arm1_speed_error,Moto_5.speed,arm1_exp,p_in,i_in,d_in);
  #endif
 		 
-		 Can_SendMoto_Arm(arm1_out,MOTO_ID_5);
+//		 Can_SendMoto_Arm(arm1_out,MOTO_ID_5);
 	 }
 	 if((arm_error[1]&&arm_error[2]) == HAL_OK)
 	 {
