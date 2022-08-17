@@ -40,6 +40,7 @@ void gyro_buzzer(uint8_t number)
 
 void dr16_buzzer(void)
 {
+	__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 50);
 		HAL_TIM_PWM_Start(&htim12,TIM_CHANNEL_1);
 		osDelay(150);
 		HAL_TIM_PWM_Stop(&htim12,TIM_CHANNEL_1);

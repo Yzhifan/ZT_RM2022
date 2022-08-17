@@ -48,3 +48,5 @@ engineer_rtos\drv_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/time
 engineer_rtos\drv_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 engineer_rtos\drv_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 engineer_rtos\drv_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+engineer_rtos\drv_can.o: ..\User\Controller\verify.h
+engineer_rtos\drv_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

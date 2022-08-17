@@ -89,8 +89,6 @@ int16_t Position_Aangle_pid(Error_position* angle_error,int16_t now_angle,int16_
 		angle_error->Now_out =-16000;
 	}
 	
-	/*实测6623给正电流的时候转动方向是相反的，在此将处理后的数据做一个简易的处理*/
-	//Gimbal6623_out = -angle_error->Now_out;
 	
 	return angle_error->Now_out;
 }
@@ -103,7 +101,6 @@ int16_t Position_Aangle_pid(Error_position* angle_error,int16_t now_angle,int16_
 */
 int16_t Position_Gyro_pid(Error_position* gyro_error,int16_t now_velocity,int16_t exp_velocity,float kp,float ki,float kd)
 {
-	int16_t Gimbal6623_out;
 	
 	gyro_error->Now = exp_velocity - now_velocity; //本次误差
 	gyro_error->integral +=gyro_error->Now;//误差积分累加

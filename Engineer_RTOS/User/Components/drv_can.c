@@ -1,7 +1,7 @@
 #include "drv_can.h"
+#include "verify.h"
 
-int16_t yaw_angle,pitch_angle;
-int16_t yaw_speed,pitch_speed;//单位：°/s
+int16_t arm2_init_angle[2];
 
 uint8_t CAN_TxData[8],CAN_RxData[8]; //定义两个八位无符号数组来存放要发送的数据和接收到的数据
 uint8_t CAN2_TxData[8],CAN2_TxData2[8],CAN2_RxData[8];
@@ -23,7 +23,6 @@ Arm_MotoData Moto_7;//2号右电机       CAN2
 Arm_MotoData Moto_8;//3号抬升电机      CAN2
 Arm_MotoData Moto_9;//4号旋转电机    CAN2
 
-BaseType_t git_test = 4;
 
 /**
 * @brief  CAN1的滤波函数（选择接收想要的信息）
@@ -91,6 +90,9 @@ void Can_Init(void)
 	
 	HAL_CAN_Start(&hcan1);  
 	HAL_CAN_Start(&hcan2);
+	
+	arm2_init_angle[0] = -1;
+	arm2_init_angle[1] = -1;
 	
 	HAL_CAN_ActivateNotification(&hcan1,CAN_IT_RX_FIFO0_MSG_PENDING);//使能中断,当FIFO0接收到数据时进入中断
 	HAL_CAN_ActivateNotification(&hcan2,CAN_IT_RX_FIFO0_MSG_PENDING);//使能中断,当FIFO0接收到数据时进入中断
@@ -245,7 +247,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			{
 				
 				Moto_1.speed = ((int16_t)CAN_RxData[2]<<8|(int16_t)CAN_RxData[3]);
-				git_test = xEventGroupSetBitsFromISR(VerifyHandle,0x01,0);
+				xEventGroupSetBitsFromISR(VerifyHandle,0x01,0);
 			}break;
 			case 0x202:
 			{
@@ -282,29 +284,56 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				Moto_5.speed = ((int16_t)CAN2_RxData[2]<<8|(int16_t)CAN2_RxData[3]);//获得电机速度
 				Moto_5.current = ((int16_t)CAN2_RxData[4]<<8|(int16_t)CAN2_RxData[5]);
 				
-				Moto_5.turns = Count_laps(Moto_5.angle,Moto_5.last_angle,Moto_5.turns);//计算电机旋转圈数
+				if(chasiss_check == check_ok)
+				{
+					Moto_5.turns = Count_laps(Moto_5.angle,Moto_5.last_angle,Moto_5.turns);//计算电机旋转圈数
+				}
+				
 				Moto_5.last_angle = Moto_5.angle;//将电机本次角度赋值给 上一次的角度
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_5,0);
 			}break;
 			case 0x206:   //2号左电机
 			{
-				Moto_6.angle   = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1]);
+				if(arm2_init_angle[0] == -1)
+				{
+					arm2_init_angle[0] = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1])- 1;
+				}
+				Moto_6.angle   = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1])-arm2_init_angle[0];
+				
+				if(Moto_6.angle<0)
+				{
+					Moto_6.angle += 8192;
+				}
 				Moto_6.speed   = ((int16_t)CAN2_RxData[2]<<8|(int16_t)CAN2_RxData[3]);
 				Moto_6.current = ((int16_t)CAN2_RxData[4]<<8|(int16_t)CAN2_RxData[5]);
 				
 				/*间接数据*/  
-				Moto_6.turns =  Count_laps(Moto_6.angle,Moto_6.last_angle,Moto_6.turns);//计算电机旋转圈数
+				if(arm_check == check_ok)
+				{
+					Moto_6.turns =  Count_laps(Moto_6.angle,Moto_6.last_angle,Moto_6.turns);//计算电机旋转圈数
+				}
 				Moto_6.last_angle = Moto_6.angle;//将电机本次角度赋值给 上一次的角度      //1:100的传动比，8192*100 = 819200分辨率/圈
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_6,0);
 			}break;
 			case 0x207:   //2号右电机
 			{
-				Moto_7.angle   = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1]);
+				if(arm2_init_angle[1] == -1)
+				{
+					arm2_init_angle[1] = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1])- 1;
+				}
+				Moto_7.angle   = ((int16_t)CAN2_RxData[0]<<8|(int16_t)CAN2_RxData[1])-arm2_init_angle[1];
+				if(Moto_7.angle<0)
+				{
+					Moto_7.angle += 8192;
+				}
 				Moto_7.speed   = ((int16_t)CAN2_RxData[2]<<8|(int16_t)CAN2_RxData[3]);
 				Moto_7.current = ((int16_t)CAN2_RxData[4]<<8|(int16_t)CAN2_RxData[5]);
 				
 				/*间接数据*/  
-				Moto_7.turns =  Count_laps(Moto_7.angle,Moto_7.last_angle,Moto_7.turns);//计算电机旋转圈数
+				if(arm_check == check_ok)
+				{
+					Moto_7.turns =  Count_laps(Moto_7.angle,Moto_7.last_angle,Moto_7.turns);//计算电机旋转圈数
+				}
 				Moto_7.last_angle = Moto_7.angle;//将电机本次角度赋值给 上一次的角度
 				
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_7,0);

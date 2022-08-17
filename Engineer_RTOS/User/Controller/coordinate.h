@@ -8,8 +8,8 @@
 
 #define L1  33.8f
 #define L1f 1142.44f
-#define L2  33.1f
-#define L2f 1095.61f
+#define L2  33.0f
+#define L2f 1089.0f
 #define L3  31.7f
 
 #define initial_x 36.8f

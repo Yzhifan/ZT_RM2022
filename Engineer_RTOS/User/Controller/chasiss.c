@@ -9,7 +9,7 @@
 #include "task.h"
 #include "cmsis_os.h"
 
-#define Mult 4       //底盘速度倍率
+#define Mult 2       //底盘速度倍率
 #define Forward   10  //正向移动速度
 #define Sideways  6  //横向移动速度
 #define Rotate    8  //旋转移动速度
@@ -66,7 +66,6 @@ int16_t tardy_stop(int16_t goal,int16_t value)
 	return goal;
 }
 
-
 /**
 * @brief  底盘控制运动函数
 * @param  None
@@ -76,23 +75,24 @@ void chasiss_controlTask(void const * argument)
 {
 	
 	
-	int16_t go_exp[4];
+	int16_t go_exp[4] = {0,0,0,0};
+	
 	
 	  for(;;)
   {
     osDelay(2);
 		
 		/* 暂时挂起任务*/
-		vTaskSuspend(chasissTaskHandle);
+		//vTaskSuspend(chasissTaskHandle);
 		
 		/*遥控器拨杆模式*/
 		if(RC.s2 == Joystick_mode)
 		{
 			
-			go_exp[0] = Mult * (-RC.x - RC.y -RC.z);//将遥控器各个方向的数据结合成一个电机的期望参数
-			go_exp[1] = Mult * (-RC.x + RC.y -RC.z);
-			go_exp[2] = Mult * ( RC.x + RC.y -RC.z);
-			go_exp[3] = Mult * ( RC.x - RC.y -RC.z);
+			go_exp[0] = Mult * ( RC.x + RC.y +RC.z);//将遥控器各个方向的数据结合成一个电机的期望参数
+			go_exp[1] = Mult * ( RC.x - RC.y +RC.z);
+			go_exp[2] = Mult * (-RC.x + RC.y +RC.z);
+			go_exp[3] = Mult * (-RC.x - RC.y +RC.z);
 		}
 		/*自由运动模式*/
 		else if(RC.s2 == Liberty_mode)
@@ -148,12 +148,12 @@ void chasiss_controlTask(void const * argument)
 			
 
 			/*各个方向的数据拟合*/
-			go_exp[0] = (-chas_x - chas_y -chas_z);
-			go_exp[1] = (-chas_x + chas_y -chas_z);
-			go_exp[2] = ( chas_x + chas_y -chas_z);
-			go_exp[3] = ( chas_x - chas_y -chas_z);
+			go_exp[0] = ( chas_x + chas_y +chas_z);
+			go_exp[1] = ( chas_x - chas_y +chas_z);
+			go_exp[2] = (-chas_x + chas_y +chas_z);
+			go_exp[3] = (-chas_x - chas_y +chas_z);
 		}
-
+		
 		/*底盘电机PID计算*/
 		chassis_value[0] = Increment_PID(&chas1_error,Moto_1.speed,go_exp[0],12,1.2,0);//一号电机pid运算
 		chassis_value[1] = Increment_PID(&chas2_error,Moto_2.speed,go_exp[1],12,1.2,0);
@@ -161,8 +161,9 @@ void chasiss_controlTask(void const * argument)
 		chassis_value[3] = Increment_PID(&chas4_error,Moto_4.speed,go_exp[3],12,1.2,0);
 		
 		/*判断底盘电机速度是否正常，如若不正常则对电机进行断电处理*/
-		if(chasiss_check == check_ok)
+		if(chasiss_check == check_ok&&(Moto_1.speed&&Moto_2.speed&&Moto_3.speed&&Moto_4.speed)<4000)
 		{
+			
 			Can_SendMoto_Chassis(chassis_value[0],chassis_value[1],chassis_value[2],chassis_value[3]);
 		}
 		else Can_SendMoto_Chassis(0,0,0,0);

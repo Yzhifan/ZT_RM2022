@@ -13,8 +13,6 @@ void EmergencyTask(void const * argument)
 	  for(;;)
   {
 
-    
-#if 0
 		if(chasiss_check != check_ok)//底盘通讯有误
 		{
 			__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 50);  //音量
@@ -34,7 +32,6 @@ void EmergencyTask(void const * argument)
 			}
 			osDelay(1000);
 		}
-#endif
 		if(arm_check != check_ok)//机械臂通讯有误
 		{
 			__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 50);  //音量
@@ -49,7 +46,7 @@ void EmergencyTask(void const * argument)
 			osDelay(500);
 			__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 15);  //音量
 			/* 挨个判断哪个电机有错，有错就执行一遍该电机编号的报警程序*/
-			for(uint8_t i= 0;i<1;i++)
+			for(uint8_t i= 0;i<5;i++)
 			{
 				if(arm_error[i])
 				{
@@ -58,7 +55,7 @@ void EmergencyTask(void const * argument)
 			}
 			osDelay(1000);
 		}
-#if 0
+//		#if 1
 		if(gyro_check != check_ok)//陀螺仪通讯有误
 		{
 			__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 50);  //音量
@@ -86,11 +83,12 @@ void EmergencyTask(void const * argument)
 			}
 			osDelay(500);
 		}
+//		#endif
 		if(dr16_check != check_ok)//陀螺仪通讯有误
 		{
 			dr16_buzzer();
 		}
-#endif
+
   }
 
 }

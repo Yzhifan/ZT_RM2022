@@ -12,7 +12,8 @@
 extern uint8_t arm_check,arm_error[5];
 
 float p_in,i_in,d_in,p_out,i_out,d_out;
-int16_t exp_angle;
+int16_t exp_angle,synchronize_angle;
+float the_data;
 
 /*云台电机结构体*/
 Error_increment arm1_speed_error;
@@ -42,7 +43,7 @@ int16_t arm_synchronize(float p)
 	int16_t deviation;
 	
 	
-	deviation = (Moto_6.turns - Moto_7.turns) *4096+(Moto_6.angle - Moto_7.angle)/2;
+	deviation = (Moto_6.turns + Moto_7.turns) *4096+(Moto_6.angle + Moto_7.angle)/2;
 	
 	deviation = deviation * p;
 	return deviation;
@@ -55,9 +56,17 @@ int16_t arm_synchronize(float p)
 */
 void gimbals_controlTask(void const * argument)
 {
+	/* 各个关节的PID运算输出*/
 	int16_t arm1_exp,arm2_exp[2],arm3_exp,arm1_out,arm2_out[2],arm3_out;
+	
+	/* 第三关节的机械角角度转换值*/
 	float arm3_leve_angle,arm3_moto_angle;
+	
+	/* 内外环比值*/
 	uint8_t loop_scale = 0;
+	
+	/* 第一关节限位*/
+	uint8_t arm1_OFF;
 	
 	for(;;)
  {
@@ -67,18 +76,27 @@ void gimbals_controlTask(void const * argument)
 	 
 	 if(arm_error[0] == HAL_OK)
 	 {
+		 arm1_OFF = HAL_GPIO_ReadPin(GPIOH,GPIO_PIN_12);
+		 
 		 /* 第一关节坐标解算及PID运算*/
 		 if(loop_scale == 5)
 		 {
 			 arm1_exp = Arm_Out1(50,30,arm1_angle[0],10);
 //			 arm1_exp = Position_Aangle_pid(&arm1_angle_error,Moto_5.angle,exp_angle,p_out,i_out,d_out);
 		 }
-#if 1
+
 		 arm1_out = Position_Gyro_pid(&arm1_gyro_error,Moto_5.speed,arm1_exp,p_in,i_in,d_in);
-#else
-		 arm1_out = Increment_PID(&arm1_speed_error,Moto_5.speed,arm1_exp,p_in,i_in,d_in);
- #endif
 		 
+		 /* 检查第一关节限位*/
+		 if(arm1_OFF == HAL_OK&&arm1_out>0)
+		 {
+			 arm1_out = 0;
+			 Moto_5.turns = 0;
+		 }
+		 else if(Moto_5.turns < -260&&arm1_out<0)
+		 {
+			 arm1_out = 0;
+		 }
 //		 Can_SendMoto_Arm(arm1_out,MOTO_ID_5);
 	 }
 	 if((arm_error[1]&&arm_error[2]) == HAL_OK)
@@ -87,12 +105,12 @@ void gimbals_controlTask(void const * argument)
 		 if(loop_scale == 5)
 		 {
 			arm2_exp[0] = Arm_Out2(50,30,arm2_angle[0],20);
-			arm2_exp[1] = Arm_Out2(50,30,arm2_angle[0],20)+arm_synchronize(0.1);
+			arm2_exp[1] = -Arm_Out2(50,30,arm2_angle[0],20)-arm_synchronize(0.2);
 			 
-			 exp_angle = arm_synchronize(0.05);
+			 synchronize_angle = arm_synchronize(0.2);
 		 }
-		 arm2_out[0] = Position_Gyro_pid(&arm2_gyro_error1,Moto_6.speed,arm2_exp[0],0,0,0);
-		 arm2_out[1] = Position_Gyro_pid(&arm2_gyro_error2,Moto_7.speed,arm2_exp[1],0,0,0);
+		 arm2_out[0] = Position_Gyro_pid(&arm2_gyro_error1,Moto_6.speed,RC.x,p_in,i_in,d_in);
+		 arm2_out[1] = Position_Gyro_pid(&arm2_gyro_error2,Moto_7.speed,-RC.x-synchronize_angle,p_in,i_in,d_in);
 	 }
 	 if(arm_error[3] == HAL_OK)
 	 {
@@ -102,21 +120,24 @@ void gimbals_controlTask(void const * argument)
 			 /* 保持第三节机械臂水平所需要的角度*/
 			 arm3_leve_angle = 180.0 - arm2_angle[0];
 			 /* 电机现在的机械角度*/
-			 arm3_moto_angle = (Moto_8.turns + (float)Moto_8.angle/8192) * (360.0/290.0);
+			 arm3_moto_angle = -(Moto_8.turns + (float)Moto_8.angle/8192) * (360.0/870.0);
 			 
 			 arm3_exp = (arm3_leve_angle - arm3_moto_angle) * 100;
 			 
-			 if(arm3_exp > 4000)
-			 {
-				 arm3_exp = 4000;
-			 }
-			
+			 the_data = arm3_moto_angle;
+			 exp_angle = arm3_exp;
+			 
+//			 if(arm3_exp > 4000)
+//			 {
+//				 arm3_exp = 4000;
+//			 }
 		 }
-		 arm3_out = Position_Gyro_pid(&arm3_gyro_error,Moto_8.speed,arm3_exp,0,0,0);
+		 arm3_out = Position_Gyro_pid(&arm3_gyro_error,Moto_8.speed,RC.z,p_in,0,0);
 		 
 	 }
-		 
-	 
+		 Can_SendMoto_Arm(arm2_out[0],MOTO_ID_6);
+		 Can_SendMoto_Arm(arm2_out[1],MOTO_ID_7);
+		 Can_SendMoto_Arm(arm3_out,MOTO_ID_8);
 	 
 	
 		if(loop_scale == 5)

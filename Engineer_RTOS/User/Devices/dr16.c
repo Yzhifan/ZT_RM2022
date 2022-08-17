@@ -7,9 +7,9 @@
  Mouse_shift    Mouse_move;
  Key_control    Key;  // 所有键盘按钮的数据
 
-#define RC_sens_X 1     //灵敏度，遥控器的摇杆值经过转换，一般为 ±660，如果对于该数值有更高倍率的要求，可以通过此处放大
+#define RC_sens_X 3     //灵敏度，遥控器的摇杆值经过转换，一般为 ±660，如果对于该数值有更高倍率的要求，可以通过此处放大
 #define RC_sens_Y 1
-#define RC_sens_Z 1
+#define RC_sens_Z 3
 #define RC_sens_pitch 1
 #define RC_sens_F  1
 #define Mouse_sens  2
@@ -17,7 +17,7 @@
 #define Gyro_mode 1  //根据陀螺仪回传的数据控制云台
 #define Motor_mode 3 //根据电机自身的机械角度控制云台
 
-#define Verify_DR16  0x400
+#define Verify_DR16  0x800
 
 int16_t Mouse_move_gyro_y;
 
