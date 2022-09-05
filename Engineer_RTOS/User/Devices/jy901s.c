@@ -39,7 +39,7 @@ void Gyro_handler(uint8_t number)
 		if(Gyro2_Data[0]== 0x55)
 		{
 		/*单独接收200Hz的姿态角数据*/
-		arm2_angle[0]=((int16_t)(Gyro2_Data[2] | (int16_t)Gyro2_Data[3] << 8))/32768.0*180;
+		arm2_angle[0]=((int16_t)(Gyro2_Data[2] | (int16_t)Gyro2_Data[3] << 8))/32768.0*180 ;
 		arm2_angle[1]=((int16_t)(Gyro2_Data[4] | (int16_t)Gyro2_Data[5] << 8))/32768.0*180;
 		arm2_angle[2]=((int16_t)(Gyro2_Data[6] | (int16_t)Gyro2_Data[7] << 8))/32768.0*180;
 			

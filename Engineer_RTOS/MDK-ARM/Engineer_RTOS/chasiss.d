@@ -1,5 +1,4 @@
 engineer_rtos\chasiss.o: ..\User\Controller\chasiss.c
-engineer_rtos\chasiss.o: C:\Tools software\keil5 MDK\ARM\ARMCC\Bin\..\include\math.h
 engineer_rtos\chasiss.o: ..\User\Controller\chasiss.h
 engineer_rtos\chasiss.o: ../Core/Inc/main.h
 engineer_rtos\chasiss.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h

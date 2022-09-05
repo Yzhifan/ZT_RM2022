@@ -2,7 +2,6 @@
 #include "drv_usart.h"
 
 
-int16_t gyro_exp;
 float in_p,in_i,in_d,out_p,out_i,out_d;
 uint8_t yaw_scale,pitch_scale;//内外环比例系数
 
@@ -57,7 +56,7 @@ int16_t Increment_PID(Error_increment *increment_error,int16_t speed_now,int16_t
 */
 int16_t Position_Aangle_pid(Error_position* angle_error,int16_t now_angle,int16_t exp_angle,float kp,float ki,float kd)
 {
-	//int16_t Gimbal6623_out;
+
 	
 	angle_error->Now = exp_angle - now_angle; //本次误差
 	angle_error->integral +=angle_error->Now;//误差积分累加

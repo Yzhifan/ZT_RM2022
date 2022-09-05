@@ -49,4 +49,7 @@ engineer_rtos\coordinate.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/t
 engineer_rtos\coordinate.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 engineer_rtos\coordinate.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 engineer_rtos\coordinate.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+engineer_rtos\coordinate.o: ..\Drivers\CMSIS\DSP\Include\arm_math.h
+engineer_rtos\coordinate.o: ../Drivers/CMSIS/Include/core_cm4.h
+engineer_rtos\coordinate.o: C:\Tools software\keil5 MDK\ARM\ARMCC\Bin\..\include\string.h
 engineer_rtos\coordinate.o: C:\Tools software\keil5 MDK\ARM\ARMCC\Bin\..\include\math.h

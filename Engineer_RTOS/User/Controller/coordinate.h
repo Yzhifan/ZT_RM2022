@@ -14,10 +14,10 @@
 
 #define initial_x 36.8f
 
-extern int16_t coordinate_x,coordinate_y;
+extern float coordinate_x,coordinate_y;
 extern int16_t real_x,real_y;
 
-int16_t Arm_Out1(int16_t x,int16_t y,float angle,float p);
-int16_t Arm_Out2(int16_t x,int16_t y,float angle,float p);
+int16_t Arm_Out1(float x,float y,float angle,float p);
+int16_t Arm_Out2(float x,float y,float angle,float p);
 
 #endif

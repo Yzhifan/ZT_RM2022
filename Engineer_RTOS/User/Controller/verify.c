@@ -5,6 +5,7 @@ extern osThreadId VerifyTaskHandle;
 extern osThreadId emergencyTaskHandle;//应急处理任务
 extern osThreadId chasissTaskHandle;//底盘运动任务
 extern TIM_HandleTypeDef htim12;
+
 uint8_t chasis_error[4],arm_error[5],gyro_error[2],dr16_error;
 uint8_t chasiss_check = 0,arm_check = 0,gyro_check = 0,dr16_check = 0;
 
@@ -29,7 +30,8 @@ void StartVerifyTask(void const * argument)
 			/* 读出事件组的所有位，并取反，将校验出错的位置1赋值给对应的数组*/
 		Verify_Data =~xEventGroupWaitBits(VerifyHandle,0x0FFF,pdFALSE,pdTRUE,0);
 
-		/* 12次循环巡查错误的位置,并对出错的位赋值给对应的数组*/
+
+			/* 12次循环巡查错误的位置,并对出错的位赋值给对应的数组*/
 		for(uint8_t i= 0;i<12;i++)
 		{
 			error[i] = Verify_Data&temp;    //与运算，逐位与，将校验状态逐个与到error数组
@@ -76,6 +78,8 @@ void StartVerifyTask(void const * argument)
 		else dr16_check = check_ok;
 		
 		
+		
+		
 		test = xEventGroupWaitBits(VerifyHandle,0x0FFF,pdTRUE,pdTRUE,1000);
 		//portMAX_DELAY
 		
@@ -84,22 +88,4 @@ void StartVerifyTask(void const * argument)
   }
 }
 
-		/* 核验底盘电机通讯状态*/
-//		chasiss_check = check_err;//将全局变量改为邮箱报文机制是否更方便？
-//		xEventGroupWaitBits(VerifyHandle,0x0F,pdTRUE,pdTRUE,portMAX_DELAY);
-//		chasiss_check = check_ok;
-//		
-//		/* 核验机械臂电机通讯状态*/
-//		arm_check = check_err;
-//		xEventGroupWaitBits(VerifyHandle,0x01F0,pdTRUE,pdTRUE,portMAX_DELAY);
-//		arm_check = check_ok;
-//		
-//		/* 核验陀螺仪通讯状态*/
-//		gyro_check = check_err;
-//		xEventGroupWaitBits(VerifyHandle,0x600,pdTRUE,pdTRUE,portMAX_DELAY);
-//		gyro_check = check_ok;
-//		
-//		/* 核验遥控接收机通讯状态*/
-//		dr16_check = check_err;
-//		xEventGroupWaitBits(VerifyHandle,0x800,pdTRUE,pdTRUE,portMAX_DELAY);
-//		dr16_check = check_ok;
+

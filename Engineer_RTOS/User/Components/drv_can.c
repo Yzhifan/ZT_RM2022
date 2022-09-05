@@ -312,7 +312,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 				{
 					Moto_6.turns =  Count_laps(Moto_6.angle,Moto_6.last_angle,Moto_6.turns);//计算电机旋转圈数
 				}
-				Moto_6.last_angle = Moto_6.angle;//将电机本次角度赋值给 上一次的角度      //1:100的传动比，8192*100 = 819200分辨率/圈
+				Moto_6.last_angle = Moto_6.angle;//将电机本次角度赋值给 上一次的角度     
+				
 				xEventGroupSetBitsFromISR(VerifyHandle,VerifyMotor_6,0);
 			}break;
 			case 0x207:   //2号右电机

@@ -56,3 +56,7 @@ engineer_rtos\gimbals.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/c
 engineer_rtos\gimbals.o: ..\User\Devices\jy901s.h
 engineer_rtos\gimbals.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 engineer_rtos\gimbals.o: ..\User\Controller\coordinate.h
+engineer_rtos\gimbals.o: ..\Drivers\CMSIS\DSP\Include\arm_math.h
+engineer_rtos\gimbals.o: ../Drivers/CMSIS/Include/core_cm4.h
+engineer_rtos\gimbals.o: C:\Tools software\keil5 MDK\ARM\ARMCC\Bin\..\include\string.h
+engineer_rtos\gimbals.o: C:\Tools software\keil5 MDK\ARM\ARMCC\Bin\..\include\math.h
