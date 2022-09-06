@@ -37,7 +37,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+int16_t test_branch;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
