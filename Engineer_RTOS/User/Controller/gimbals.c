@@ -9,6 +9,8 @@
 
 #include "arm_math.h"
 
+int16_t test_change;
+
 #define Gyro_mode 1  //根据陀螺仪回传的数据控制云台
 #define Motor_mode 3 //根据电机自身的机械角度控制云台
 
