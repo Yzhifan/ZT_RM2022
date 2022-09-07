@@ -1732,7 +1732,7 @@ Removing Unused input sections from the image.
     Removing main.o(.rev16_text), (4 bytes).
     Removing main.o(.revsh_text), (4 bytes).
     Removing main.o(.rrx_text), (6 bytes).
-    Removing main.o(.data), (2 bytes).
+    Removing main.o(.data), (4 bytes).
     Removing gpio.o(.rev16_text), (4 bytes).
     Removing gpio.o(.revsh_text), (4 bytes).
     Removing gpio.o(.rrx_text), (6 bytes).
@@ -2494,7 +2494,7 @@ Removing Unused input sections from the image.
     Removing arm_common_tables.o(.constdata), (2052 bytes).
     Removing arm_common_tables.o(.constdata), (1026 bytes).
 
-764 unused section(s) (total 274020 bytes) removed from the image.
+764 unused section(s) (total 274022 bytes) removed from the image.
 
 ==============================================================================
 
@@ -4264,56 +4264,29 @@ Memory Map of the image
     0x200000b0   0x00000050   Data   RW         5586    .data               drv_can.o
     0x20000100   0x00000002   Data   RW         5656    .data               drv_usart.o
     0x20000102   0x00000002   PAD
-<<<<<<< HEAD
     0x20000104   0x00000020   Data   RW         5713    .data               chasiss.o
-    0x20000124   0x00000060   Data   RW         5816    .data               gimbals.o
-    0x20000184   0x00000018   Data   RW         5924    .data               verify.o
-    0x2000019c   0x0000000a   Data   RW         6027    .data               dr16.o
-    0x200001a6   0x00000002   PAD
-    0x200001a8   0x000006b8   Zero   RW          269    .bss                freertos.o
-    0x20000860   0x00000050   Zero   RW          343    .bss                can.o
-    0x200008b0   0x00000058   Zero   RW          418    .bss                spi.o
-    0x20000908   0x00000048   Zero   RW          461    .bss                tim.o
-    0x20000950   0x00000230   Zero   RW          511    .bss                usart.o
-    0x20000b80   0x00000048   Zero   RW          716    .bss                stm32f4xx_hal_timebase_tim.o
-    0x20000bc8   0x00000040   Zero   RW         4167    .bss                queue.o
-    0x20000c08   0x000000f0   Zero   RW         4589    .bss                tasks.o
-    0x20000cf8   0x00000118   Zero   RW         4921    .bss                timers.o
-    0x20000e10   0x00003c00   Zero   RW         5450    .bss                heap_4.o
-    0x20004a10   0x000000a4   Zero   RW         5585    .bss                drv_can.o
-    0x20004ab4   0x00000050   Zero   RW         5655    .bss                drv_usart.o
-    0x20004b04   0x00000028   Zero   RW         5712    .bss                chasiss.o
-    0x20004b2c   0x00000010   Zero   RW         5766    .bss                coordinate.o
-    0x20004b3c   0x0000003a   Zero   RW         6026    .bss                dr16.o
-    0x20004b76   0x00000002   PAD
-    0x20004b78   0x00000024   Zero   RW         6059    .bss                jy901s.o
-    0x20004b9c   0x00000060   Zero   RW         6468    .bss                c_w.l(libspace.o)
-    0x20004bfc   0x00000004   PAD
-=======
-    0x20000104   0x00000020   Data   RW         5710    .data               chasiss.o
-    0x20000124   0x00000064   Data   RW         5813    .data               gimbals.o
-    0x20000188   0x00000018   Data   RW         5921    .data               verify.o
-    0x200001a0   0x0000000a   Data   RW         6024    .data               dr16.o
+    0x20000124   0x00000064   Data   RW         5816    .data               gimbals.o
+    0x20000188   0x00000018   Data   RW         5924    .data               verify.o
+    0x200001a0   0x0000000a   Data   RW         6027    .data               dr16.o
     0x200001aa   0x00000002   PAD
-    0x200001ac   0x000006b8   Zero   RW          266    .bss                freertos.o
-    0x20000864   0x00000050   Zero   RW          340    .bss                can.o
-    0x200008b4   0x00000058   Zero   RW          415    .bss                spi.o
-    0x2000090c   0x00000048   Zero   RW          458    .bss                tim.o
-    0x20000954   0x00000230   Zero   RW          508    .bss                usart.o
-    0x20000b84   0x00000048   Zero   RW          713    .bss                stm32f4xx_hal_timebase_tim.o
-    0x20000bcc   0x00000040   Zero   RW         4164    .bss                queue.o
-    0x20000c0c   0x000000f0   Zero   RW         4586    .bss                tasks.o
-    0x20000cfc   0x00000118   Zero   RW         4918    .bss                timers.o
-    0x20000e14   0x00003c00   Zero   RW         5447    .bss                heap_4.o
-    0x20004a14   0x000000a4   Zero   RW         5582    .bss                drv_can.o
-    0x20004ab8   0x00000050   Zero   RW         5652    .bss                drv_usart.o
-    0x20004b08   0x00000028   Zero   RW         5709    .bss                chasiss.o
-    0x20004b30   0x00000010   Zero   RW         5763    .bss                coordinate.o
-    0x20004b40   0x0000003a   Zero   RW         6023    .bss                dr16.o
+    0x200001ac   0x000006b8   Zero   RW          269    .bss                freertos.o
+    0x20000864   0x00000050   Zero   RW          343    .bss                can.o
+    0x200008b4   0x00000058   Zero   RW          418    .bss                spi.o
+    0x2000090c   0x00000048   Zero   RW          461    .bss                tim.o
+    0x20000954   0x00000230   Zero   RW          511    .bss                usart.o
+    0x20000b84   0x00000048   Zero   RW          716    .bss                stm32f4xx_hal_timebase_tim.o
+    0x20000bcc   0x00000040   Zero   RW         4167    .bss                queue.o
+    0x20000c0c   0x000000f0   Zero   RW         4589    .bss                tasks.o
+    0x20000cfc   0x00000118   Zero   RW         4921    .bss                timers.o
+    0x20000e14   0x00003c00   Zero   RW         5450    .bss                heap_4.o
+    0x20004a14   0x000000a4   Zero   RW         5585    .bss                drv_can.o
+    0x20004ab8   0x00000050   Zero   RW         5655    .bss                drv_usart.o
+    0x20004b08   0x00000028   Zero   RW         5712    .bss                chasiss.o
+    0x20004b30   0x00000010   Zero   RW         5766    .bss                coordinate.o
+    0x20004b40   0x0000003a   Zero   RW         6026    .bss                dr16.o
     0x20004b7a   0x00000002   PAD
-    0x20004b7c   0x00000024   Zero   RW         6056    .bss                jy901s.o
-    0x20004ba0   0x00000060   Zero   RW         6465    .bss                c_w.l(libspace.o)
->>>>>>> refs/remotes/origin/master
+    0x20004b7c   0x00000024   Zero   RW         6059    .bss                jy901s.o
+    0x20004ba0   0x00000060   Zero   RW         6468    .bss                c_w.l(libspace.o)
     0x20004c00   0x00000200   Zero   RW            2    HEAP                startup_stm32f427xx.o
     0x20004e00   0x00000400   Zero   RW            1    STACK               startup_stm32f427xx.o
 
