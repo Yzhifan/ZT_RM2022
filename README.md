@@ -3,6 +3,16 @@
 #### 介绍
 关于RoboMaster2022赛季调试的机器人相关代码
 
+- a
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}x}\cos x=-\sin x
+$$
+
+```log
+123 ad
+```
+
 #### 软件架构
 软件架构说明
 
